@@ -9,14 +9,11 @@ frontend/.env
 frontend/build/
 
 # General
-.DS_Store
-*.log
 .env
-
+*.log
 .DS_Store
 coverage/
 .vscode/
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -24,6 +21,5 @@ yarn-error.log*
 *.swp
 *.swo
 .cache/
-build/
 tmp/
 temp/
