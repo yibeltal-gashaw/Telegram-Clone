@@ -9,16 +9,16 @@ import messageRoute from './routes/message.route.js';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+}));
 
 // This middleware parses incoming JSON requests and makes the parsed data available on req.body.
 app.use(express.json());
 app.use(cookieParser());
 
 // Routes here
-app.get('/', (req, res) => {
-    res.send('<h1>Chatty Realtime Chat App</h1>');
-});
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoute);
 
