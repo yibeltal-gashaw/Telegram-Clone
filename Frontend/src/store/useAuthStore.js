@@ -53,6 +53,39 @@ export const useAuthStore =  create((set) => ({
           } finally{
             set({isSigningUp: false})
           }
+      },
+      login: async ({ email, password }) => {
+        set({ isLoggingIn: true });
+
+        try {
+          const response = await axiosInstance.post('/auth/login', {
+            email,
+            password,
+          });
+
+          set({ authUser: response.data });
+          toast.success("Login successful.");
+        } catch (error) {
+            set({ authUser: null });
+
+            const errors = error.response?.data?.errors;
+
+            if (Array.isArray(errors)) {
+              // Show each validation message
+              errors.forEach((err) => {
+                toast.error(err.message); // you could also include the field like `${err.field}: ${err.message}`
+              });
+            } else {
+              // Fallback for non-array error
+              const message = error.response?.data?.message || "Login failed";
+              toast.error(message);
+            }
+
+            console.error("Login error:", error.response?.data || error.message);
+            throw error;
+          } finally{
+            set({isLoggingIn: false})
+          }
       }
       
 }));
