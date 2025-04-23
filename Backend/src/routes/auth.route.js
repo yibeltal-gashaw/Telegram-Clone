@@ -42,7 +42,7 @@ router.post('/forgot-password',ForgotPassword);
 router.post('/reset-password/:token',ResetPassword);
 
 // update user profile
-router.post('/update-profile',haveToken,UpdateProfile);
+router.put('/update-profile',haveToken,UpdateProfile);
 router.get('/check',haveToken,checkAuth);
 
 export default router;

@@ -9,9 +9,11 @@ import  {useAuthStore}  from './store/useAuthStore'
 import { useEffect } from 'react'
 import {Loader} from 'lucide-react'
 import { Toaster } from 'react-hot-toast'
+import { useThemeStore } from './store/useThemeStore'
 
 function App() {
     const {authUser, checkAuth,isCheckingAuth} = useAuthStore();
+    const {theme} = useThemeStore();
     useEffect(() => {
       checkAuth();
     }, [checkAuth]);
@@ -21,18 +23,18 @@ function App() {
        </div>
     )
   return (
-    <div>
-      <Toaster  
-      position="top-center"
-      reverseOrder={false}/>
+    <div data-theme={theme}>
       <NavBar />
       <Routes>
         <Route path="/" element={authUser ? <HomePage/> : <Navigate to='/login'/>} />
         <Route path='/login' element={!authUser ? <LoginPage/> : <Navigate to='/'/>} />
         <Route path='/signup' element={!authUser ? <SignupPage/> : <Navigate to='/'/>} />
-        <Route path='/setting' element={authUser ? <HomePage/> : <Navigate to='/setting'/>} />
-        <Route path='/profile' element={authUser ? <HomePage/> : <Navigate to='/profile'/>} />
+        <Route path='/setting' element={authUser ? <SettingPage/> : <Navigate to='/login'/>} />
+        <Route path='/profile' element={authUser ? <ProfilePage/> : <Navigate to='/login'/>} />
       </Routes>
+      <Toaster  
+      position="top-center"
+      reverseOrder={false}/>
     </div>
   )
 }

@@ -7,6 +7,7 @@ export const useAuthStore =  create((set) => ({
     isLoggingIn: false,
     isSigningUp: false,
     isCheckingAuth: true,
+    isUpdatingProfile: false,
 
     checkAuth: async () => {
         try {
@@ -86,6 +87,34 @@ export const useAuthStore =  create((set) => ({
           } finally{
             set({isLoggingIn: false})
           }
+      },
+
+      updateProfile: async (data) => {
+        set({ isUpdatingProfile: true });
+        try {
+          const res = await axiosInstance.put('/auth/update-profile', data);
+          set({ authUser: res.data });
+          toast.success("Profile updated successfully.");
+        } catch (error) {
+          set({ authUser: null });
+        
+          const errors = error.response?.data?.errors;
+        
+          if (Array.isArray(errors)) {
+            // Show each validation message
+            errors.forEach((err) => {
+              toast.error(err.message); // you could also include the field like `${err.field}: ${err.message}`
+            });
+          } else {
+            // Fallback for non-array error
+            const message = error.response?.data?.message || "Image Uploading failed";
+            toast.error(message);
+          }
+        
+          console.error("Image Uploading Error:", error.response?.data || error.message);
+          throw error;
+        } finally{
+          set({isUpdatingProfile: false})
+        }
       }
-      
 }));
