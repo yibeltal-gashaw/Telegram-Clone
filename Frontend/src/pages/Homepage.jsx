@@ -1,8 +1,8 @@
+import SideBar from "../components/Sidebar"
+
 function Homepage() {
   return (
-    <div className="p-4">
-      <h1 className="text-left text-2xl font-bold">Home Page</h1>
-    </div>
+    <SideBar/>
   )
 }
 

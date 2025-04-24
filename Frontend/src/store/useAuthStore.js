@@ -45,7 +45,7 @@ export const useAuthStore =  create((set) => ({
               });
             } else {
               // Fallback for non-array error
-              const message = error.response?.data?.message || "Signup failed";
+              const message = error.response?.data?.message || "Signup failed, please try again or \n check your internet connection!";
               toast.error(message);
             }
           
@@ -78,7 +78,7 @@ export const useAuthStore =  create((set) => ({
               });
             } else {
               // Fallback for non-array error
-              const message = error.response?.data?.message || "Login failed";
+              const message = error.response?.data?.message || "Login failed, please try again or \n check your internet connection!";
               toast.error(message);
             }
 
