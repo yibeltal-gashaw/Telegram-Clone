@@ -1,12 +1,12 @@
 # Node (backend)
-backend/node_modules/
-backend/.env
-backend/dist/
+Backend/node_modules/
+Backend/.env
+Backend/dist/
 
 # React (frontend)
-frontend/node_modules/
-frontend/.env
-frontend/build/
+Frontend/node_modules/
+Frontend/.env
+Frontend/build/
 
 # General
 .env
