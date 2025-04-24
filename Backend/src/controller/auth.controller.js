@@ -1,7 +1,6 @@
 import {validationResult} from 'express-validator';
 import User from '../models/user.model.js';
 import {generateToken} from '../lib/utils.js';
-import jwt from 'jsonwebtoken';
 import {cloudinary} from '../lib/cloudinary.js';
 
 export const Register = async (req, res) => {
