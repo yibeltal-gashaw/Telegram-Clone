@@ -1,3 +1,4 @@
+
 import { Routes, Route, Navigate } from 'react-router-dom'
 import NavBar from './components/Navbar'
 import HomePage from './pages/Homepage'
@@ -14,9 +15,11 @@ import { useThemeStore } from './store/useThemeStore'
 function App() {
     const {authUser, checkAuth,isCheckingAuth} = useAuthStore();
     const {theme} = useThemeStore();
+    
     useEffect(() => {
       checkAuth();
     }, [checkAuth]);
+
     if(isCheckingAuth && !authUser) return(
       <div className='flex items-center justify-center h-screen'>
         <Loader className='animate-spin'/>
