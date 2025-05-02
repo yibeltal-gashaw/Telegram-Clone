@@ -15,10 +15,14 @@ function LoginPage() {
     e.preventDefault()
     // Handle login logic here
     login(formData)
+    setFormData({
+      email:"",
+      password:""
+    })
   }
 
   return (
-      <div className="min-h-screen lg:grid-cols-2">
+    <div className="min-h-[675px] overflow-x-hidden">
       {/* left side */}
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8">

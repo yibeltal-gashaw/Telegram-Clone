@@ -17,52 +17,53 @@ export const getUsers = async (req, res) => {
     }
 }
 
-export const getMessages = (req, res) => {
+export const getMessages = async(req, res) => {
     try {
-        const { id: chatId } = req.params.id;
+        const chatId = req.params.id;
         const senderId = req.user._id;
 
         // get all messages send and recived by the user
-        const message = Message.find({
+        const message = await Message.find({
             $or: [
-                { senderId: senderId, revieverId: chatId },
-                { senderId: chatId, revieverId: senderId }
+                { senderId: senderId, receiverId: chatId },
+                { senderId: chatId, receiverId: senderId }
             ]
-        })
+        });
 
         res.status(200).json(message)
 
     } catch (error) {
         console.log("Error in Message Controller" + error.message);
-        res.status(500).json({ Error: "Internal Server Errro!" });
+        res.status(500).json({ Error: error.message});
     }
 }
 
-export const sendMessage = (req, res) => {
+export const sendMessage = async (req, res) => {
     try {
-        const { text, image } = req.body;
-        const { id: recieverId } = req.params.id;
-        const senderId = req.user._id;
-
-        let imageUrl;
-        if(image){
-            const uploadImage = cloudinary.uploader.upload(image);
-            imageUrl = uploadImage.secure_url;
-        }
-        const newMessage = new Message({
-            senderId,
-            recieverId,
-            text,
-            image: imageUrl
-        })
-
-        newMessage.save();
-
-
-    res.status(200).json(newMessage)
-
+      const { text, image } = req.body;
+      const receiverId = req.params.id; // ✅  object destructuring
+      const senderId = req.user._id;
+  
+      let imageUrl = "";
+  
+      if (image) {
+        const uploadImage = await cloudinary.uploader.upload(image); // ✅ await it
+        imageUrl = uploadImage.secure_url;
+      }
+  
+      const newMessage = new Message({
+        senderId,
+        receiverId,
+        text,
+        image: imageUrl
+      });
+  
+      await newMessage.save(); // ✅ await to ensure it's saved before responding
+  
+      res.status(200).json(newMessage);
     } catch (error) {
-        console.log("Error in Message Controller" + error.message);
-        res.status(500).json({ Error: "Internal Server Errro!" });
+      console.error("Error in Message Controller: " + error.message);
+      res.status(500).json({ error: error.message });
     }
-}
+  };
+  

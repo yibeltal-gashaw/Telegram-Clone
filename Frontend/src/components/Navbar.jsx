@@ -1,5 +1,6 @@
 import React from 'react'
 import { useAuthStore } from '../store/useAuthStore'
+import { Settings } from 'lucide-react';
 
 const NavBar = () => {
   const {authUser, isLoggedIn, logout} =useAuthStore()
@@ -21,11 +22,7 @@ const NavBar = () => {
         
         <div className="dropdown dropdown-end">
         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-            <div className="w-10 rounded-full">
-            <img
-                alt="Tailwind CSS Navbar component"
-                src={profilePicture || "/profile.jpg"} />
-            </div>
+            <Settings className="w-12 rounded-full" />
         </div>
         <ul
             tabIndex={0}

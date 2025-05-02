@@ -58,7 +58,7 @@ export const useAuthStore =  create((set) => ({
           }
       },
       login: async ({ email, password }) => {
-        set({ isLoggingIn: true });
+        
 
         try {
           const response = await axiosInstance.post('/auth/login', {
@@ -69,6 +69,7 @@ export const useAuthStore =  create((set) => ({
           set({ authUser: response.data });
           set({ isLoggedIn: true });
           toast.success("Login successful.");
+          set({ isLoggingIn: true });
         } catch (error) {
             set({ authUser: null });
 
@@ -137,7 +138,7 @@ export const useAuthStore =  create((set) => ({
             })
 
           } else{
-            toast.error(errors.response?.data.message || "Logout failed");
+            toast.error(errors.response?.data.message || "connection time out");
           }
           throw error;
           
