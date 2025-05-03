@@ -6,24 +6,27 @@ function ProfilePage() {
   const {authUser, isUpdatingProfile, updateProfile} = useAuthStore();
   const [selectedImage, setSelectedImage] = useState(null);
   
-  const handleImageUplaod = async (e) => {
-    const file = e.target.files[0];
-    if(!file) return;
-    
+  const handleImageUpload = async (e) => {
+    const pickedFile = e.target.files[0];
+    if (!pickedFile) return;
+  
     const reader = new FileReader();
-    reader.readAsDataURL(file);
+  
+    // Read and preview the image
+    reader.readAsDataURL(pickedFile);
     reader.onload = async () => {
       const base64Image = reader.result;
-      setSelectedImage(base64Image);
-      
+      setSelectedImage(base64Image); // for preview
+  
       try {
-        // Make sure we're sending the data in the correct format
-        await updateProfile({ profilePicture: base64Image });
+        // Correct: send actual File object
+        await updateProfile({ profilePicture: pickedFile });
       } catch (error) {
         console.error("Error updating profile:", error);
       }
-    }
-  }
+    };
+  };
+  
   
   return (
     <div className='h-screen pt-20'>
@@ -55,7 +58,7 @@ function ProfilePage() {
                     type="file"
                     id='avator-upload'
                     className='hidden'
-                    onChange={handleImageUplaod}
+                    onChange={handleImageUpload}
                     accept='image/*'
                     disabled={isUpdatingProfile}
                     />

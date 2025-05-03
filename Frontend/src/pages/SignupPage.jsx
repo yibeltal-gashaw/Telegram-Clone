@@ -149,6 +149,7 @@ function SignupPage() {
                 "Create Account"
               )}
             </button>
+            <p>Already have Account? <a href="/login"><span className='text-accent cursor-pointer'>Signin</span></a></p>
           </form>
         </div>
       </div>

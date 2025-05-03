@@ -4,58 +4,64 @@ import toast from 'react-hot-toast'
 import {Plus, X} from 'lucide-react'
 
 function MessageInput() {
-      const { sendMessages } = useChatStore()
-      const [text, setText] = useState("")
-      const [image,setImage] = useState(null);
-      const fileInputRef = useRef(null)
+      const { sendMessages } = useChatStore();
+      const [text, setText] = useState("");
+      const [imagePreview, setImagePreview] = useState(null);
+      const [file, setFile] = useState(null);
+      const fileInputRef = useRef(null);
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if(!file.type.startsWith('image/')){
+      const handleImageChange = (e) => {
+        const selectedFile = e.target.files[0];
+        if (!selectedFile?.type.startsWith('image/')) {
           toast.error("Please select an image file");
           return;
         }
+
+        // Save file for upload
+        setFile(selectedFile);
+
+        // Show preview
         const reader = new FileReader();
         reader.onloadend = () => {
-          setImage(reader.result);
-        }
-    
-        reader.readAsDataURL(file);
-        toast.success(`Selected: ${file.name}`)
-      }
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(selectedFile);
+      };
+
       const removeImage = () => {
-        setImage(null);
+        setImagePreview(null);
         if(fileInputRef.current) fileInputRef.current.value = ""
       }
-    
-      const handleSendMessage = async(e) => {
+
+      const handleSendMessage = async (e) => {
         e.preventDefault();
-        if(!text.trim() && !image) return;
+        if (!text.trim() && !file) return;
+
         try {
           await sendMessages({
-            text:text.trim(),
-            image:image
+            text: text.trim(),
+            image: file, // send actual file
           });
-          
-    
-          //  clear form 
+
+          // Clear form
           setText("");
-          setImage("");
-    
+          setImagePreview(null);
+          setFile(null);
+          if (fileInputRef.current) fileInputRef.current.value = null;
         } catch (error) {
-          toast.error("Failed to send messages")
+          toast.error("Failed to send message");
         }
-      }
+      };
+
   return (
     <div>
-      <div className="p-4 border-t border-base-300">
-        <div className="flex items-center gap-2 bg-base-200 rounded-full px-4 py-2">
+        <div className="flex items-center justify-center gap-2 bg-base-200 px-4 py-2">
         {
-          image && (
+          imagePreview && (
             <div className="mb-3 flex items-center gap-2">
             <div className="relative">
               <img
-                src={image}
+                src={imagePreview}
                 alt="Preview"
                 className="size-20 object-cover rounded-lg"
               />
@@ -81,8 +87,8 @@ function MessageInput() {
           <button
             type='button'
             aria-label='Upload Images'
-            className={`hidden sm:flex btn btn-circle ${
-                image ? "text-emerald-500" : "text-zinc-400"
+            className={`hidden sm:flex btn btn-circle hover:text-emerald-500 ${
+                imagePreview ? "text-emerald-500" : "text-zinc-400"
               }`}
               onClick={() => fileInputRef.current?.click()}
           >
@@ -113,7 +119,6 @@ function MessageInput() {
           </button>
         </div>
       </div>
-    </div>
   )
 }
 

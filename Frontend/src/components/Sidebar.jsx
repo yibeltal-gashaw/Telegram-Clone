@@ -2,12 +2,17 @@ import { Users } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { useChatStore } from '../store/useChatStore'
 import SideBarSkeleton from './skeleton/SideBarSkeleton'
+import { useAuthStore } from '../store/useAuthStore'
 
 function Sidebar() {
-    const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } = useChatStore()
+    const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading,countUnseenMessages,unSeenMessage } = useChatStore()
+    const {authUser} =useAuthStore();
     useEffect(() => {
-        getUsers()
-    },[getUsers])
+        getUsers(),
+        countUnseenMessages(authUser._id);
+
+    },[getUsers,countUnseenMessages])
+
     if(isUsersLoading) return <SideBarSkeleton/>
     return (
         <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
@@ -24,7 +29,7 @@ function Sidebar() {
                 {
                     users.map((user) => (
                         <div 
-                        key={user.id}
+                        key={user._id}
                         className={`w-full p-3 flex items-center gap-3 mt-1 hover:bg-base-300 cursor-pointer transition-colors ${selectedUser?.id === user.id ? 'bg-base-100' : ''}`}
                         onClick={() => setSelectedUser(user)}>
                             {/* Avatar */}
@@ -40,9 +45,9 @@ function Sidebar() {
                                 </div>
                                 <div className="flex justify-between px-2 h-4 text-sm text-ellipsis whitespace-nowrap">
                                     <p className='pr-3 text-base-content/70 truncate'>Someone Just Joined telegram</p>
-                                    <div className="bg-primary text-primary-content rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                                        <p>1</p>
-                                    </div>
+                                    {/* <div className="bg-primary text-primary-content rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                                        
+                                    </div> */}
                                 </div>
                             </div>
                         </div>

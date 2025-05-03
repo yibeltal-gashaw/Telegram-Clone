@@ -98,6 +98,7 @@ function LoginPage() {
                 "Login"
               )}
             </button>
+            <p>Not a member? <a href="/signup"><span className='text-accent cursor-pointer'>Create New Account</span></a></p>
           </form>
         </div>
       </div>
